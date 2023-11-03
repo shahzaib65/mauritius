@@ -6,8 +6,8 @@ const { body, validationResult } = require('express-validator');
 
 //endpoint user set their availability
 router.post("/check-available",[
-    body('status', 'Enter a valid username').isLength({ min: 3 }),
-    body('notes', 'Notes must be atleast 10 characters').isLength({ min: 10 }),
+    body('status', 'Enter a valid username'),
+    body('notes', 'Notes must be atleast 10 characters'),
     body('availability_date','Please select your available date')
 ],async (req, res) => {
     const errors = validationResult(req);
