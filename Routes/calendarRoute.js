@@ -17,7 +17,7 @@ router.post("/check-available",[
     try {
         let check_availbility = await Calendar.findOne({ availability_date: req.body.availability_date });
         if (check_availbility) {
-          return res.status(400).json({ error: "Sorry a user with this date already exist" })
+          return res.status(400).send({ error: "Sorry a user with this date already exist" })
         }
 
         check_user = await Calendar.create({
