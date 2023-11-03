@@ -66,13 +66,9 @@ router.post('/login', [
     if (!passwordCompare) {
       return res.status(400).json({ success, error: "Please try to login with correct credentials" });
     }
-    // const data = {
-    //   user: {
-    //     id: user._id
-    //   }
-    // }
     let userId = user._id
     isAdmin = user.isAdmin
+
    // console.log(data.user.id);
   //  const authtoken = jwt.sign(userId, JWT_SECRET);
    // res.json({user,isAdmin, authtoken })
@@ -83,6 +79,26 @@ router.post('/login', [
   }
 
 });
+
+ router.post("/token/:id",async(req,res)=>{
+  try {
+    // const data = await User.findOne({_id: req.params.id });
+ 
+       const userData = await User.findByIdAndUpdate(
+         { _id: req.params.id },
+         { $set: { token: req.body.token} },
+         { new: true }
+       );
+       res
+         .status(200)
+         .send({
+          userData
+         });
+   } catch (error) {
+     res.status(500).send({ error: error.message })
+   }
+ })
+
 
 // //Change name 
 // router.post("/changeusername",async(req,res)=>{
