@@ -40,19 +40,19 @@ router.get("/get-message/:senderId/:recepientId",async(req,res)=>{
       }
 });
 //endpoint to get the userDetails to design the chat Room header
-// router.get("/user/:userId", async (req, res) => {
-//     try {
-//       const { userId } = req.params;
+router.get("/user/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
   
-//       //fetch the user data from the user ID
-//       const recepientId = await User.findById(userId);
+      //fetch the user data from the user ID
+      const recepientId = await User.findById(userId);
   
-//       res.json(recepientId);
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ error: "Internal Server Error" });
-//     }
-//   });
+      res.json(recepientId);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
 
 //endpoint to delete the messages!
 // router.post("/deleteMessages", async (req, res) => {
