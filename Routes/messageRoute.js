@@ -1,8 +1,42 @@
 const express = require("express");
 const router = express.Router();
 const Message = require("../Model/Message");
-
 const User = require("../Model/User");
+
+var admin = require("firebase-admin");
+var serviceAccount = require("../middleware/service.json");
+//initilize the admin here
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+
+});
+
+router.post("/send", async(req, res) =>{
+  const receivedToken = req.body.fcmToken;
+ // const body = req.body.body;
+ // const title = req.body.title
+  const message = {
+    notification: {
+      title: req.body.title,
+      body: req.body.body
+    },
+    token: receivedToken,
+  };
+  await  admin.messaging()
+    .send(message)
+    .then((response) => {
+      res.status(200).json({
+        message: "Successfully sent message",
+        token: receivedToken,
+      });
+      console.log("Successfully sent message:", response);
+    })
+    .catch((error) => {
+      res.status(400);
+      res.send(error);
+      console.log("Error sending message:", error);
+    });
+});
 
 //endpoint to post Messages and store it in the backend
 router.post("/send-message",async(req,res)=>{
@@ -14,7 +48,8 @@ try {
       recepientId,
       message: message
     });
-res.status(200).send({message: newMessage})
+     const recepientUser = await User.findById({_id: req.body.recepientId})
+     res.status(200).send({notification: recepientUser.token,message})
 } catch (error) {
     res.status(400).send({error: error.message})
 }
