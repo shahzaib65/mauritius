@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const randomString = require("randomstring");
 const { body, validationResult } = require('express-validator');
-const fetchuser = require('../middleware/FetchUser');
+
 
 const JWT_SECRET = 'Shahzaibisagoodb$oy';
 
@@ -141,8 +141,7 @@ router.get('/getuser/:id',  async (req, res) => {
 
 // //endpoint to change username
 router.post("/change-username/:id",
-body('username', 'Enter a valid username').isLength({ min: 3 }),
-fetchuser,async(req,res)=>{
+body('username', 'Enter a valid username').isLength({ min: 3 }),async(req,res)=>{
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ error: errors.array() });
@@ -226,7 +225,7 @@ fetchuser,async(req,res)=>{
 //   }
 // });
 //endpoint to delete the user
-router.delete("/delete-user/:id",fetchuser,async(req,res)=>{
+router.delete("/delete-user/:id",async(req,res)=>{
 try {
   const { id } = req.params;
   const user = await User.findByIdAndDelete(id);
