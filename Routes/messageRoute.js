@@ -20,13 +20,14 @@ res.status(200).send({message: newMessage})
 }
 });
 //endpoint to fetch the messages between two users in the chatRoom
-router.get("/get-message",async(req,res)=>{
+router.get("/get-message/:senderId/:recepientId",async(req,res)=>{
     try {
-        const { senderId, recepientId } = req.body;
+       // const { senderId, recepientId } = req.body;
+      //  console.log(req.body)
         const messages = await Message.find({
           $or: [
-            { senderId: senderId, recepientId: recepientId },
-            { senderId: recepientId, recepientId: senderId },
+            { senderId: req.params.senderId, recepientId: req.params.recepientId },
+            { senderId: req.params.recepientId, recepientId: req.params.senderId },
           ],
         })
         //.populate({path: "users", select: "_id username"});
