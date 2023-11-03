@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Message = require("../Model/Message");
-const fetchuser = require("../middleware/FetchUser");
+
 const User = require("../Model/User");
 
 //endpoint to post Messages and store it in the backend
-router.post("/send-message",fetchuser,async(req,res)=>{
+router.post("/send-message",async(req,res)=>{
 try {
     const { senderId, recepientId, messageText } = req.body;
     const newMessage = await Message.create({
@@ -19,7 +19,7 @@ res.status(200).send({message: newMessage})
 }
 });
 //endpoint to fetch the messages between two users in the chatRoom
-router.get("/get-message",fetchuser,async(req,res)=>{
+router.get("/get-message",async(req,res)=>{
     try {
         const { senderId, recepientId } = req.body;
         const messages = await Message.find({
@@ -70,7 +70,7 @@ router.get("/get-message",fetchuser,async(req,res)=>{
 //     }
 //   });
 
-router.delete("/delete-message/:id",fetchuser,async(req,res)=>{
+router.delete("/delete-message/:id",async(req,res)=>{
     try {
       const { id } = req.params;
       const message = await Message.findByIdAndDelete(id);

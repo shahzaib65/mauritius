@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Calendar = require("../Model/Calender");
-var fetchuser = require('../middleware/FetchUser');
+
 const { body, validationResult } = require('express-validator');
 
 //endpoint user set their availability
@@ -9,7 +9,7 @@ router.post("/check-available",[
     body('status', 'Enter a valid username').isLength({ min: 3 }),
     body('notes', 'Notes must be atleast 10 characters').isLength({ min: 10 }),
     body('availability_date','Please select your available date')
-],fetchuser,async (req, res) => {
+],async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ error: errors.array() });
@@ -32,7 +32,7 @@ router.post("/check-available",[
       }
 });
 
-router.get("/get-availability",fetchuser,async(req,res)=>{
+router.get("/get-availability",async(req,res)=>{
 
   try {
 
