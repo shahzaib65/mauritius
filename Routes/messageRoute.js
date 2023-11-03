@@ -7,11 +7,12 @@ const User = require("../Model/User");
 //endpoint to post Messages and store it in the backend
 router.post("/send-message",async(req,res)=>{
 try {
-    const { senderId, recepientId, messageText } = req.body;
+    const { senderId, recepientId, message } = req.body;
+    console.log(req.body)
     const newMessage = await Message.create({
       senderId,
       recepientId,
-      message: messageText
+      message: message
     });
 res.status(200).send({message: newMessage})
 } catch (error) {
